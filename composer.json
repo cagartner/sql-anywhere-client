@@ -1,0 +1,19 @@
+{
+    "name": "cagartner/SQLAnywhereClient",
+    "description": "Client for connection whit sybase",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos Augusto Gartner",
+            "email": "contato@carlosgartner.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Cagartner": "src/"
+        }
+    }
+}
