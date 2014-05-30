@@ -14,6 +14,8 @@ try {
 	echo $e->getMessage();
 }
 
+$sql = "SELECT id FROM usuario WHERE id = 1";
+
 // SQL
 $sql = "INSERT INTO usuario (name, email, password, status) VALUES ('Carlos', 'contato@carlosgartner.com.br', '".md5('teste')."', 1) ";
 $result = $con->exec($sql);
