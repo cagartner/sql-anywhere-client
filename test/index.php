@@ -14,51 +14,9 @@ try {
 
 	$result = $con->exec($sql);
 
-	// foreach ($result->fetchAll(PDO::FETCH_ASSOC) as $resultado) {
-	// 	 print_r($resultado)
-	// }
-
 	var_dump($result);
 	exit;
 
 } catch (Exception $e) {
 	echo $e->getMessage();
 }
-
-// $sql = 'SELECT * FROM Usuarios WHERE Id = ?';
-
-// $result = $con->exec($sql);
-
-// echo "<pre>";
-// print_r($result->fetchAll());
-// echo "</pre>";
-// exit;	
-// 
-// $Id = null;
-
-
-
-// $stmnt = $con->prepare($sql);
-
-// @$stmnt->bindParam( 'i', $Id );
-// // sasql_stmt_bind_param(  )
-
-// $Id = 1;
-
-// $stmnt->execute();
-
-// $data = $stmnt->fetch();
-
-// echo "<pre>";
-// var_dump($data);
-// echo "</pre>";
-// exit;
-
-// $stmnt->execute();
-
-// echo 'Total de registros: ' . $data->count();
-
-// echo "<pre>";
-// print_r($data->fetch());
-// echo "</pre>";
-// exit;
