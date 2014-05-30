@@ -1,5 +1,5 @@
 {
-    "name": "cagartner/SQLAnywhereClient",
+    "name": "cagartner/sql-anywhere-client",
     "description": "Client for connection with sybase",
     "license": "MIT",
     "authors": [
