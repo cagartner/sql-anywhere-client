@@ -38,6 +38,15 @@ class SQLAnywhereQuery
 	}
 
 	/**
+	 * The number of rows affected.
+	 * @return integer
+	 */
+	public function affectedRows()
+	{
+		return sasql_affected_rows( $this->connection );
+	}
+
+	/**
 	 * Returns number os rows of the query.
 	 * This function is for simple of name
 	 * @return integer

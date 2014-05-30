@@ -130,13 +130,43 @@ class SQLAnywhereClient
 		return new SQLAnywherePrepared( sasql_prepare( $this->connection, $this->sql_string ), $this->connection );
 	}
 
+	/**
+	 * Return error code for connection
+	 * @return int 
+	 */
 	public function errorCode()
 	{
 		return sasql_errorcode( $this->connection ? $this->connection : null );
 	}
 
+	/**
+	 * Returns all error info for connection
+	 * @return [type] [description]
+	 */
 	public function errorInfo()
 	{
 		return sasql_error( $this->connection ? $this->connection : null );
 	}
+
+	/**
+	 * Commit the transaction
+	 * @return boolean TRUE if is successful or FALSE otherwise.
+	 */
+	public function commit()
+	{
+		return sasql_commit( $this->connection );
+	}
+
+	/**
+	 * Rollback last commit action
+	 * @return boolean TRUE if is successful or FALSE otherwise.
+	 */
+	public function rollback()
+	{
+		return sasql_rollback( $this->connection );
+	}
+
+	public function __destruct(){
+	    return sasql_commit( $this->connection );
+  	}
 }
