@@ -18,6 +18,11 @@ try {
 	$stmnt->bindParam( 'email', $email );
 	$stmnt->execute();
 
+	echo "<pre>";
+	print_r($stmnt->fetchAll());
+	echo "</pre>";
+	exit;
+
 } catch (Exception $e) {
 	echo $e->getMessage();
 }

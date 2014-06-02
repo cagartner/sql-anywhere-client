@@ -73,13 +73,10 @@ class SQLAnywherePrepared
 				$__query = str_replace($tempf, $tempr, $__query);
 		}
 
-		if($this->__result = $this->__uquery($__query))
-			$keyvars = false;
-		else
-			$keyvars = true;
-		$this->__boundParams = array();
+		$this->__result = $this->__uquery($__query);
+		$this->__boundParams = array();		$this->__boundParams = array();
 
-		return $keyvars;
+		return $this->__result;
 	}
 
 	public function paramCount()
@@ -88,9 +85,8 @@ class SQLAnywherePrepared
 	}
 
 	public function __uquery(&$query) {
-		if(!@$query = sasql_query($this->__connection, $query)) {
+		if(!$query = sasql_query($this->__connection, $query)) {
 			$this->__setErrors('SQLER');
-			$query = null;
 		}
 		$this->__result = $query;		
 		return $this->__result;
@@ -263,7 +259,7 @@ class SQLAnywherePrepared
 		}
 		$this->__errorCode = &$er;
 		$this->__errorInfo = array($this->__errorCode, $errno, $errst);
-		$this->__result = null;
+		$this->__result = false;
 	}
 
 }
