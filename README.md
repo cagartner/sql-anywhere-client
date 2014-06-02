@@ -22,7 +22,6 @@ TODO:
     // ...
 
 # Como usar
-=================
 
 Abaixo você ve alguns exemplos de como usar a classe:
 
