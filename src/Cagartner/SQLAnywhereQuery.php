@@ -38,6 +38,15 @@ class SQLAnywhereQuery
 	}
 
 	/**
+	 * Returns number os rows of the query.
+	 * @return integer
+	 */
+	public function columnCount()
+	{
+		return sasql_num_fields( $this->connection );
+	}
+
+	/**
 	 * The number of rows affected.
 	 * @return integer
 	 */

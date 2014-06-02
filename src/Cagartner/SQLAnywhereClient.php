@@ -19,6 +19,7 @@ class SQLAnywhereClient
 	protected $persistent = null ;
 	protected $autocommit = null ;
 	protected $dns        = null ;
+	protected $dbinfo     = array();
 
 	// Types os returns
 	const FETCH_ARRAY  = 'array';
@@ -66,6 +67,7 @@ class SQLAnywhereClient
 		// Define option auto_commit
 		if ( $this->connection ) {
 			sasql_set_option($this->connection, 'auto_commit', ($this->autocommit ? 'on' : 0));
+			$this->dbinfo = Array($dns, $autocommit, $persistent);
 		}		
 	}
 
@@ -124,10 +126,10 @@ class SQLAnywhereClient
 	 * @param  string $sql_string SQL string
 	 * @return \SQLAnywherePrepared         
 	 */
-	public function prepare($sql_string)
+	public function prepare($sql_string, $array=array())
 	{
 		$this->sql_string = $sql_string;
-		return new SQLAnywherePrepared( sasql_prepare( $this->connection, $this->sql_string ), $this->connection );
+		return new SQLAnywherePrepared( $this->sql_string, $this->connection, $this->dbinfo );
 	}
 
 	/**
@@ -146,6 +148,11 @@ class SQLAnywhereClient
 	public function errorInfo()
 	{
 		return sasql_error( $this->connection ? $this->connection : null );
+	}
+
+	// UNSUPPORTED PUBLIC METHODS
+	public function beginTransaction() {
+		return true;
 	}
 
 	/**
