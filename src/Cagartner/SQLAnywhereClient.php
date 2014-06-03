@@ -176,4 +176,10 @@ class SQLAnywhereClient
 	public function __destruct(){
 	    return sasql_commit( $this->connection );
   	}
+
+  	// UNSUPPORTED PUBLIC METHODS
+  	public function quote($data='')
+	{
+		return true;
+	}
 }
