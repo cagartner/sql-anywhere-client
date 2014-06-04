@@ -1,5 +1,7 @@
 <?php namespace Cagartner;
 
+use Cagartner\SQLAnywhereQuery AS SQLAnywhereQuery;
+
 /**
 * @author Carlos A Gartner <contato@carlosgartner.com.br>
 */
@@ -85,14 +87,13 @@ class SQLAnywherePrepared
 	}
 
 	public function __uquery(&$query) {
-		if(!$query = sasql_query($this->__connection, $query)) {
+		if(!$query = sasql_query( $this->__connection, $query )) {
 			$this->__setErrors('SQLER');
+			return false;
 		}
-		$this->__result = $query;		
+		$this->__result = new SQLAnywhereQuery( $query, $this->__connection );		
 		return $this->__result;
 	}
-
-
 
 	/**
 	 * Returns number os rows of the query.
@@ -100,7 +101,7 @@ class SQLAnywherePrepared
 	 */
 	public function rowCount()
 	{
-		return sasql_num_rows( $this->__result );
+		return $this->__result->rowCount();
 	}
 
 	/**
@@ -109,7 +110,7 @@ class SQLAnywherePrepared
 	 */
 	public function fieldCount()
 	{
-		return sasql_num_fields( $this->connection );
+		return sasql_num_fields( $this->__connection );
 	}
 
 	/**
@@ -118,7 +119,7 @@ class SQLAnywherePrepared
 	 */
 	public function affectedRows()
 	{
-		return sasql_affected_rows( $this->connection );
+		return sasql_affected_rows( $this->__connection );
 	}
 
 	/**
@@ -129,8 +130,8 @@ class SQLAnywherePrepared
 	public function count($type='row')
 	{
 		if ($type=='row')
-			return sasql_num_rows( $this->__result );
-		return sasql_num_fields( $this->connection );
+			return $this->__result->rowCount();
+		return sasql_num_fields( $this->__connection );
 	}
 
 	/**
@@ -140,35 +141,7 @@ class SQLAnywherePrepared
 	 */
 	public function fetch($type=SQLAnywhereClient::FETCH_ASSOC)
 	{
-		$data = null;
-		if ($this->__result) {
-			switch ($type) {
-				case 'array':
-					$data = sasql_fetch_array( $this->__result );
-				break;
-
-				case 'assoc':
-					$data = sasql_fetch_assoc( $this->__result );
-				break;
-
-				case 'row':
-					$data = sasql_fetch_row( $this->__result );
-				break;
-
-				case 'field':
-					$data = sasql_fetch_field( $this->__result );
-				break;
-
-				case 'object':
-					$data = sasql_fetch_object( $this->__result );
-				break;
-				
-				default:
-					$data = sasql_fetch_array( $this->__result );
-				break;
-			}		
-		}
-		return $data;
+		return $this->__result->fetch($type);
 	}
 
 	/**
@@ -178,43 +151,7 @@ class SQLAnywherePrepared
 	 */
 	public function fetchAll($type=SQLAnywhereClient::FETCH_ASSOC)
 	{
-		$data = array();
-		
-		if ($this->__result) {
-			switch ($type) {
-				case 'array':
-					while ($row = sasql_fetch_array( $this->__result ))
-						array_push($data, $row);
-				break;
-
-				case 'assoc':
-					while ($row = sasql_fetch_assoc( $this->__result ))
-						array_push($data, $row);
-				break;
-
-				case 'row':
-					while ($row = sasql_fetch_row( $this->__result ))
-						array_push($data, $row);
-				break;
-
-				case 'field':
-					while ($row = sasql_fetch_field( $this->__result ))
-						array_push($data, $row);
-				break;
-
-				case 'object':
-					while ($row = sasql_fetch_object( $this->__result ))
-						array_push($data, $row);			
-				break;
-				
-				default:
-					while ($row = sasql_fetch_array( $this->__result ))
-						array_push($data, $row);
-				break;
-			}		
-		}
-
-		return $data;
+		return $this->__result->fetchAll($type);
 	}
 
 	/**
@@ -223,7 +160,7 @@ class SQLAnywherePrepared
 	 */
 	public function fetchObject()
 	{
-		return sasql_fetch_object( $this->__result );
+		return $this->__result->fetchObject();
 	}
 
 	/**
@@ -236,7 +173,7 @@ class SQLAnywherePrepared
 	 */
 	public function resultAll( $table_format=null, $header_format=null, $row_format=null, $cell_format=null )
 	{
-		return sasql_result_all( $this->__result, $table_format, $header_format, $row_format, $cell_format );
+		return $this->__result->resultAll($table_format, $header_format, $row_format, $cell_format);
 	}
 
 	/**
@@ -245,7 +182,7 @@ class SQLAnywherePrepared
 	 */
 	public function freeResults()
 	{
-		return sasql_free_result( $this->__result );
+		return $this->__result->freeResults();
 	}
 
 	public function __setErrors($er) {
