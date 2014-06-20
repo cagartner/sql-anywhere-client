@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Sql-anywhere-client by cagartner</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Sql-anywhere-client</h1>
+          <h2>Cliente of connection for slqanywhere/sybase database based on PHP class PDO</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/cagartner/sql-anywhere-client/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/cagartner/sql-anywhere-client/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/cagartner/sql-anywhere-client" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="sqlanywhereclient" class="anchor" href="#sqlanywhereclient"><span class="octicon octicon-link"></span></a>SQLAnywhereClient</h1>
+
+<p>Classe para conexão com banco de dados Sybase com PHP baseada na biblioteca sqlanywhere.</p>
+
+<p>Classe foi baseada na Classe Nativa do PDO.</p>
+
+<p>TODO:</p>
+
+<ul>
+<li>Testar classe com eficácia</li>
+</ul><h2>
+<a name="instala%C3%A7%C3%A3o" class="anchor" href="#instala%C3%A7%C3%A3o"><span class="octicon octicon-link"></span></a>Instalação</h2>
+
+<h1></h1>
+
+<p>1- Primeiro instale o modulo do sqlanywhere em seu PHP <a href="http://scn.sap.com/docs/DOC-40537">Clincando aqui!</a>.</p>
+
+<p>2- Use o composer para instalar o package ao seu projeto adicionado a linha abaixo ao <code>require</code>:</p>
+
+<pre><code>// ...
+"require": {
+    "cagartner/SQLAnywhereClient": "dev-master"
+},
+// ...
+</code></pre>
+
+<h1>
+<a name="como-usar" class="anchor" href="#como-usar"><span class="octicon octicon-link"></span></a>Como usar</h1>
+
+<p>Abaixo você ve alguns exemplos de como usar a classe:</p>
+
+<h3>
+<a name="conex%C3%A3o-sqlanywhereclient__construct" class="anchor" href="#conex%C3%A3o-sqlanywhereclient__construct"><span class="octicon octicon-link"></span></a>Conexão <code>SQLAnywhereClient::__construct</code>:</h3>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="k">require</span> <span class="s1">'../vendor/autoload.php'</span><span class="p">;</span>
+
+    <span class="k">use</span> <span class="nx">Cagartner\SQLAnywhereClient</span><span class="p">;</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nv">$dns</span> <span class="o">=</span> <span class="s2">"uid={usuario};pwd={senha};ENG={nome-do-banco};commlinks=tcpip{host={seu-host};port={sua-porta}}"</span><span class="p">;</span>
+        <span class="nv">$con</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SQLAnywhereClient</span><span class="p">(</span> <span class="nv">$dns</span> <span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>Você pode definir duas opções iniciais junto com a conexão, que são as seguintes: <code>auto_commit</code> e <code>is_persistent</code>.</p>
+
+<ul>
+<li>
+<code>auto_commit</code> Ativa os commits automaticamente por padrão é <code>true</code>;</li>
+<li>
+<code>is_persistent</code> Define conexão no modo persistente por padrão é <code>false</code>;</li>
+</ul><div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="k">require</span> <span class="s1">'../vendor/autoload.php'</span><span class="p">;</span>
+
+    <span class="k">use</span> <span class="nx">Cagartner\SQLAnywhereClient</span><span class="p">;</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nv">$dns</span> <span class="o">=</span> <span class="s2">"uid={uid};pwd={senha};ENG={};commlinks=tcpip{host={seuuhost};port={suasenha}}"</span><span class="p">;</span>
+        <span class="nv">$autocommit</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="nv">$persistent</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+
+        <span class="nv">$con</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SQLAnywhereClient</span><span class="p">(</span> <span class="nv">$dns</span><span class="p">,</span> <span class="nv">$autocommit</span><span class="p">,</span> <span class="nv">$persistent</span> <span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">Exception</span> <span class="nv">$e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$e</span><span class="o">-&gt;</span><span class="na">getMessage</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="executar-comando-sql-sqlanywhereclientexec" class="anchor" href="#executar-comando-sql-sqlanywhereclientexec"><span class="octicon octicon-link"></span></a>Executar comando SQL <code>SQLAnywhereClient::exec()</code>:</h3>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT * FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+
+    <span class="k">echo</span> <span class="s2">"&lt;pre&gt;"</span><span class="p">;</span>
+    <span class="nb">print_r</span><span class="p">(</span><span class="nv">$result</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">());</span>
+    <span class="k">echo</span> <span class="s2">"&lt;/pre&gt;"</span><span class="p">;</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="executar-comando-sql-com-retorno-de-dados-sqlanywhereclientquery-" class="anchor" href="#executar-comando-sql-com-retorno-de-dados-sqlanywhereclientquery-"><span class="octicon octicon-link"></span></a>Executar comando SQL com retorno de dados <code>SQLAnywhereClient::query()</code> :</h3>
+
+<p>Método retornar um array com várias posições</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$con</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">)</span> <span class="k">as</span> <span class="nv">$resultado</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">print_r</span><span class="p">(</span><span class="nv">$resultado</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="retornar-uma-linha-sqlanywherequeryfetch" class="anchor" href="#retornar-uma-linha-sqlanywherequeryfetch"><span class="octicon octicon-link"></span></a>Retornar uma linha <code>SQLAnywhereQuery::fetch</code>
+</h3>
+
+<p>Retornar a primeira linha</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+    <span class="nv">$usuario</span> <span class="o">=</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">();</span>
+
+    <span class="nb">print_r</span><span class="p">(</span><span class="nv">$usuario</span><span class="p">);</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="formato-de-retorno-dos-dados" class="anchor" href="#formato-de-retorno-dos-dados"><span class="octicon octicon-link"></span></a>Formato de retorno dos dados</h3>
+
+<p>Podemos escolher o formato dos dados no retorno com as seguintes constantes da classe <code>SQLAnywhereClient</code></p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="c1">// Retornar em um array com idexação por numero e coluna</span>
+    <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_ARRAY</span><span class="p">;</span>
+
+    <span class="c1">// Retornar em um array com idexação por coluna</span>
+    <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_ASSOC</span><span class="p">;</span> <span class="c1">// Formato Padrão!</span>
+
+    <span class="c1">// Retornar em um array com idexação por coluna</span>
+    <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_OBJECT</span><span class="p">;</span>
+
+    <span class="c1">// Retornar em um array com idexação por linha de dados</span>
+    <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_ROW</span><span class="p">;</span>
+
+    <span class="c1">// Retornar em um array com idexação por colunas</span>
+    <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_FIELD</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>Exemplo:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+    <span class="nv">$usuario</span> <span class="o">=</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">fetch</span><span class="p">(</span> <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_OBJECT</span> <span class="p">);</span>
+
+    <span class="nb">print_r</span><span class="p">(</span><span class="nv">$usuario</span><span class="p">);</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="retornar-todas-as-linhas-sqlanywherequeryfetchall" class="anchor" href="#retornar-todas-as-linhas-sqlanywherequeryfetchall"><span class="octicon octicon-link"></span></a>Retornar todas as linhas <code>SQLAnywhereQuery::fetchAll</code>
+</h3>
+
+<p>Retornar Todas as linhas encontradas</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+    <span class="nv">$usuario</span> <span class="o">=</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">fetchAll</span><span class="p">();</span>
+
+    <span class="nb">print_r</span><span class="p">(</span><span class="nv">$usuario</span><span class="p">);</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>Como no caso assima do fetch, você pode retornar os valores em diferentes formatos utilizando as mesmas constantes, exemplo:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+    <span class="nv">$usuario</span> <span class="o">=</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">fetchAll</span><span class="p">(</span> <span class="nx">SQLAnywhereClient</span><span class="o">::</span><span class="na">FETCH_OBJECT</span> <span class="p">);</span>
+
+    <span class="nb">print_r</span><span class="p">(</span><span class="nv">$usuario</span><span class="p">);</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="n%C3%BAmeros-de-linhas-sqlanywherequeryrowcount" class="anchor" href="#n%C3%BAmeros-de-linhas-sqlanywherequeryrowcount"><span class="octicon octicon-link"></span></a>Números de linhas <code>SQLAnywhereQuery::rowCount</code>
+</h3>
+
+<p>Retornar o total de linhas encontradas</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+
+    <span class="k">echo</span> <span class="s2">"Foram encontrados "</span> <span class="o">.</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">rowCount</span><span class="p">()</span> <span class="o">.</span> <span class="s2">" registros."</span><span class="p">;</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>Ou também da seguinte maneira: </p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+
+    <span class="k">echo</span> <span class="s2">"Foram encontrados "</span> <span class="o">.</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">()</span> <span class="o">.</span> <span class="s2">" registros."</span><span class="p">;</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="n%C3%BAmeros-de-colunas-sqlanywherequeryfieldcount" class="anchor" href="#n%C3%BAmeros-de-colunas-sqlanywherequeryfieldcount"><span class="octicon octicon-link"></span></a>Números de colunas <code>SQLAnywhereQuery::fieldCount</code>
+</h3>
+
+<p>Retornar o total de colunas encontradas</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT nome, email FROM Usuarios"</span><span class="p">;</span>
+    <span class="nv">$resultado</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+
+    <span class="k">echo</span> <span class="s2">"Foram encontrados "</span> <span class="o">.</span> <span class="nv">$resultado</span><span class="o">-&gt;</span><span class="na">fieldCount</span><span class="p">()</span> <span class="o">.</span> <span class="s2">" colunas na tabela."</span><span class="p">;</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="%C3%9Altimo-id-inserido-sqlanywhereclientlastinsertid" class="anchor" href="#%C3%9Altimo-id-inserido-sqlanywhereclientlastinsertid"><span class="octicon octicon-link"></span></a>Último Id inserido <code>SQLAnywhereClient::lastInsertId()</code>
+</h3>
+
+<p>Retorna o último o valor do último id inserido na conexão</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO Usuarios  nome, email VALUES ('Carlos', 'contato@carlosgartner.com.br')"</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">))</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lastInsertId</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="%C3%9Altimo-id-inserido-sqlanywhereclientlastinsertid-1" class="anchor" href="#%C3%9Altimo-id-inserido-sqlanywhereclientlastinsertid-1"><span class="octicon octicon-link"></span></a>Último Id inserido <code>SQLAnywhereClient::lastInsertId()</code>
+</h3>
+
+<p>Retorna o último o valor do último id inserido na conexão</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO Usuarios  nome, email VALUES ('Carlos', 'contato@carlosgartner.com.br')"</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$con</span><span class="o">-&gt;</span><span class="na">exec</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">))</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lastInsertId</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="prepared-statement-sqlanywhereclientprepare" class="anchor" href="#prepared-statement-sqlanywhereclientprepare"><span class="octicon octicon-link"></span></a>Prepared Statement <code>SQLAnywhereClient::prepare()</code>:</h3>
+
+<p>Preparar sql usando <code>?</code>:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO Usuarios  nome, email VALUES (?, ?)"</span><span class="p">;</span>
+    <span class="nv">$stmnt</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$stmnt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'Carlos'</span><span class="p">,</span> <span class="s1">'contato@carlosgartner.com.br'</span><span class="p">)))</span> <span class="p">{</span>
+         <span class="k">echo</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lastInsertId</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>E usando nomes para os parametros:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO Usuarios  nome, email VALUES (:nome, :email)"</span><span class="p">;</span>
+    <span class="nv">$stmnt</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$stmnt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+        <span class="s1">':nome'</span> <span class="o">=&gt;</span> <span class="s1">'Carlos'</span><span class="p">,</span> 
+        <span class="s1">':email'</span> <span class="o">=&gt;</span> <span class="s1">'contato@carlosgartner.com.br'</span>
+    <span class="p">)))</span> <span class="p">{</span>
+         <span class="k">echo</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lastInsertId</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h3>
+<a name="bind-param-sqlanywherepreparedbindparam" class="anchor" href="#bind-param-sqlanywherepreparedbindparam"><span class="octicon octicon-link"></span></a>Bind Param <code>SQLAnywherePrepared::bindParam()</code>:</h3>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO Usuarios  nome, email VALUES (:nome, :email)"</span><span class="p">;</span>
+    <span class="nv">$stmnt</span> <span class="o">=</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">prepare</span><span class="p">(</span> <span class="nv">$sql</span> <span class="p">);</span>
+
+    <span class="nv">$nome</span> <span class="o">=</span> <span class="s2">"Carlos A."</span><span class="p">;</span>
+    <span class="nv">$email</span> <span class="o">=</span> <span class="s2">"contato@carlosgartner.com.br"</span><span class="p">;</span>
+
+    <span class="nv">$stmnt</span><span class="o">-&gt;</span><span class="na">bindParam</span><span class="p">(</span><span class="s1">':nome'</span><span class="p">,</span> <span class="nv">$nome</span><span class="p">);</span>
+    <span class="nv">$stmnt</span><span class="o">-&gt;</span><span class="na">bindParam</span><span class="p">(</span><span class="s1">':email'</span><span class="p">,</span> <span class="nv">$email</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$stmnt</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">())</span> <span class="p">{</span>
+         <span class="k">echo</span> <span class="nv">$con</span><span class="o">-&gt;</span><span class="na">lastInsertId</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+        </section>
+
+        <footer>
+          Sql-anywhere-client is maintained by <a href="https://github.com/cagartner">cagartner</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
