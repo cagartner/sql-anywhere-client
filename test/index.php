@@ -6,8 +6,7 @@ use Cagartner\SQLAnywhereClient AS PDO;
 
 try {
 
-	// $dns = "uid=digitalto;pwd=123sql;ENG=CDTESTE;commlinks=tcpip{host=192.168.1.159;port=9505}";
-	$dns = "uid=teste-conexao;pwd=teste;ENG=teste-conexao;commlinks=tcpip{host=Carlos.bludata.local;port=2638}";
+	$dns = "uid=teste;pwd=teste;ENG=teste;commlinks=tcpip{host=127.0.0.1;port=2638}";
 	$con = new PDO( $dns );
 
 	$sql = "INSERT INTO usuario (name, email, status) VALUES ('Carlos', 'contato@carlosgartner.com.br', 1) ";

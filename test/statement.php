@@ -5,12 +5,11 @@ require '../vendor/autoload.php';
 use Cagartner\SQLAnywhereClient AS PDO;
 
 try {
+	$dns = "uid=teste;pwd=teste;ENG=teste;commlinks=tcpip{host=127.0.0.1;port=2638}";
 
-	// $dns = "uid=digitalto;pwd=123sql;ENG=CDTESTE;commlinks=tcpip{host=192.168.1.159;port=9505}";
-	$dns = "uid=eplacas;pwd=blu321data;ENG=eplacas;commlinks=tcpip{host=Carlos.bludata.local;port=2638}";
 	$con = new PDO( $dns );
 
-	$sql = "select * from usuario";
+	$sql = "SELECT * FROM Usuario WHERE Id = ?";
 
 	// $sql = 'update "usuario" set "updated_at" = :data, "remember_token" = :token where "pkUsuario" = :pk';
 
@@ -22,7 +21,7 @@ try {
 	// $stmnt->bindParam( ':pk', $pk );
 	// $stmnt->bindParam( ':token', $token );
 	// $stmnt->bindParam( ':data', $data );
-	$stmnt->execute();
+	$stmnt->execute(array('2'));
 
 	echo "<pre>";
 	print_r($stmnt->fetchAll());

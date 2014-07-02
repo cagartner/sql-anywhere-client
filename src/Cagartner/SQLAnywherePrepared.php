@@ -64,17 +64,17 @@ class SQLAnywherePrepared
 					array_push($tempr, "'".sasql_escape_string($c,$v)."'");
 				}
 				else {
-					$parse = function($con, $val) {
-					    return "'" . sasql_escape_string($con,$val) . "'";
-					};
-					$__query = preg_replace("/(\?)/e", '$parse($c,$array[$k++]);', $__query);
+
+					$__query = preg_replace_callback ("/(\?)/", function ($matches) use ($c, $array, $k) {
+						return "'" . sasql_escape_string($c, $array[$k++]) . "'";
+					}, $__query);
 					break;
 				}
 			}
+
 			if(isset($tempf))
 				$__query = str_replace($tempf, $tempr, $__query);
 		}
-
 		$this->__result = $this->__uquery($__query);
 		$this->__boundParams = array();		$this->__boundParams = array();
 
