@@ -48,7 +48,7 @@ class SQLAnywherePrepared
 	public function execute($array = array()) {
 		$c = $this->__connection;
 		if(count($this->__boundParams) > 0)
-			$array = &$this->__boundParams;
+		$array = &$this->__boundParams;
 		$__query = $this->__query;
 		if(count($array) > 0) {
 			foreach($array as $k => $v) {
@@ -64,10 +64,11 @@ class SQLAnywherePrepared
 					array_push($tempr, "'".sasql_escape_string($c,$v)."'");
 				}
 				else {
-
-					$__query = preg_replace_callback ("/(\?)/", function ($matches) use ($c, $array, $k) {
-						return "'" . sasql_escape_string($c, $array[$k++]) . "'";
-					}, $__query);
+					$parse = function($matchs) use ($c, $array, $k) {
+						static $i = 0;
+					    return "'" . sasql_escape_string($c, $array[$i++]) . "'";
+					};
+					$__query = preg_replace_callback("(\?)is", $parse, $__query);
 					break;
 				}
 			}
