@@ -7,8 +7,8 @@ use Cagartner\SQLAnywhereQuery AS SQLAnywhereQuery;
 */
 class SQLAnywherePrepared
 {
-	protected $__query; 		
-	protected $__connection; 		
+	protected $__query;
+	protected $__connection;
 	protected $__dbinfo;
 	protected $__boundParams = array();
 	protected $__result;
@@ -42,13 +42,15 @@ class SQLAnywherePrepared
 		$result = 0;
 		if(!is_null($this->__connection))
 			$result = sasql_num_fields($this->__connection);
-		return $result; 
+		return $result;
 	}
 
 	public function execute($array = array()) {
-		$c = $this->__connection;
+		$connection = $this->__connection;
+
 		if(count($this->__boundParams) > 0)
-		$array = &$this->__boundParams;
+			$array = &$this->__boundParams;
+
 		$__query = $this->__query;
 		if(count($array) > 0) {
 			foreach($array as $k => $v) {
@@ -56,17 +58,22 @@ class SQLAnywherePrepared
 					if(!isset($tempf))
 						$tempf = $tempr = array();
 					array_push($tempf, $k);
-					array_push($tempr, "'".sasql_escape_string($c,$v)."'");
+					array_push($tempr, "'".sasql_escape_string($connection,$v)."'");
 				} else if (!is_int($k)) {
 					if(!isset($tempf))
 						$tempf = $tempr = array();
 					array_push($tempf, ':'.$k);
-					array_push($tempr, "'".sasql_escape_string($c,$v)."'");
-				}
-				else {
-					$parse = function($matchs) use ($c, $array, $k) {
+					array_push($tempr, "'".sasql_escape_string($connection,$v)."'");
+				} else {
+					$parse = function($matchs) use ($connection, $array, $k) {
 						static $i = 0;
-					    return "'" . sasql_escape_string($c, $array[$i++]) . "'";
+
+						if(empty($array[$i])){
+							$i++;
+							return 'NULL';
+						}
+
+					  return "'" . sasql_escape_string($connection, $array[$i++]) . "'";
 					};
 					$__query = preg_replace_callback("(\?)is", $parse, $__query);
 					break;
@@ -77,7 +84,7 @@ class SQLAnywherePrepared
 				$__query = str_replace($tempf, $tempr, $__query);
 		}
 		$this->__result = $this->__uquery($__query);
-		$this->__boundParams = array();		$this->__boundParams = array();
+		$this->__boundParams = array();
 
 		return $this->__result;
 	}
@@ -92,7 +99,7 @@ class SQLAnywherePrepared
 			$this->__setErrors('SQLER');
 			return false;
 		}
-		$this->__result = new SQLAnywhereQuery( $query, $this->__connection );		
+		$this->__result = new SQLAnywhereQuery( $query, $this->__connection );
 		return $this->__result;
 	}
 
@@ -138,7 +145,7 @@ class SQLAnywherePrepared
 	/**
 	 * Return one row of __result
 	 * @param  constant $type Format of return
-	 * @return array|object       
+	 * @return array|object
 	 */
 	public function fetch($type=SQLAnywhereClient::FETCH_ASSOC)
 	{
@@ -148,7 +155,7 @@ class SQLAnywherePrepared
 	/**
 	 * Return All values of Results in one choose format
 	 * @param  constant $type Format of return
-	 * @return array       
+	 * @return array
 	 */
 	public function fetchAll($type=SQLAnywhereClient::FETCH_ASSOC)
 	{
