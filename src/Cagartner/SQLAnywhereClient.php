@@ -52,7 +52,7 @@ class SQLAnywhereClient
 		$this->autocommit = $autocommit;
 
 		if (!function_exists('sasql_connect')) 
-			throw new Exception("SQL Anywhere model not install in this server!", 100);			
+			throw new Exception("SQL Anywhere driver is not installed in this server, please install it.", 100);			
 
 		// Verifica se a conexão é persistente
 		if ( $this->persistent ) {
